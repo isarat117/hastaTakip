@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Edit, Trash2, Calendar, CreditCard, ArrowLeft } from 'lucide-react';
-import './PatientDetails.css';
 import { useParams, useNavigate } from 'react-router-dom';
+import { ArrowLeft, Edit, Trash2, Calendar, CreditCard, Image } from 'lucide-react';
+import './PatientDetails.css';
 
 const PatientDetails = () => {
-  const {tcNumber}= useParams();
+  const { tcNumber } = useParams();
   const navigate = useNavigate();
   const [patient, setPatient] = useState(null);
 
   useEffect(() => {
-    console.log(tcNumber)
     const fetchPatientDetails = async () => {
       try {
         const response = await fetch(`http://localhost:3000/api/patients/${tcNumber}`);
+        if (!response.ok) {
+          throw new Error('Hasta bilgileri alınamadı');
+        }
         const data = await response.json();
         setPatient(data);
       } catch (error) {
@@ -40,6 +42,7 @@ const PatientDetails = () => {
   };
 
   const formatDate = (dateString) => {
+    if (!dateString) return '-';
     return new Date(dateString).toLocaleDateString('tr-TR');
   };
 
@@ -48,6 +51,25 @@ const PatientDetails = () => {
       style: 'currency',
       currency: 'TRY',
     }).format(amount);
+  };
+
+  const handleDelete = async () => {
+    if (window.confirm('Bu hastayı silmek istediğinizden emin misiniz?')) {
+      try {
+        const response = await fetch(`http://localhost:3000/api/patients/${tcNumber}`, {
+          method: 'DELETE'
+        });
+        
+        if (!response.ok) {
+          throw new Error('Hasta silinirken bir hata oluştu');
+        }
+        
+        navigate('/');
+      } catch (error) {
+        console.error('Silme hatası:', error);
+        alert('Hasta silinirken bir hata oluştu');
+      }
+    }
   };
 
   if (!patient) return <div className="loading">Yükleniyor...</div>;
@@ -65,31 +87,20 @@ const PatientDetails = () => {
           </div>
           <div className="button-group">
             <button
+              className="button primary"
+              onClick={() => navigate(`/patients/${tcNumber}/radiographs`)}
+            >
+              <Image className="icon" />
+              Radyolojik Görüntüler
+            </button>
+            <button
               className="button edit"
               onClick={() => navigate(`/edit-patient/${tcNumber}`)}
             >
               <Edit className="icon" />
               Düzenle
             </button>
-            
-            <button className="button delete" onClick={async () => {
-              if(window.confirm('Bu hastayı silmek istediğinizden emin misiniz?')) {
-                try {
-                  const response = await fetch(`http://localhost:3000/api/patients/${tcNumber}`, {
-                    method: 'DELETE'
-                  });
-                  
-                  if (!response.ok) {
-                    throw new Error('Hasta silinirken bir hata oluştu');
-                  }
-                  
-                  navigate('/');
-                } catch (error) {
-                  console.error('Silme hatası:', error);
-                  alert('Hasta silinirken bir hata oluştu');
-                }
-              }
-            }}>
+            <button className="button delete" onClick={handleDelete}>
               <Trash2 className="icon" />
               Sil
             </button>
@@ -98,38 +109,26 @@ const PatientDetails = () => {
         <div className="card-content">
           <div className="info-grid">
             <div className="info-item">
-              <p className="label">T.C. Numarası</p>
-              <p className="value">{patient.tcNumber}</p>
+              <span className="label">T.C. Kimlik No:</span>
+              <span>{patient.tcNumber}</span>
             </div>
             <div className="info-item">
-              <p className="label">Adı</p>
-              <p className="value">{patient.name}</p>
+              <span className="label">Ad Soyad:</span>
+              <span>{patient.name}</span>
             </div>
             <div className="info-item">
-              <p className="label">Telefon Numarası</p>
-              <p className="value">{patient.phoneNumber}</p>
+              <span className="label">Telefon:</span>
+              <span>{patient.phoneNumber}</span>
             </div>
             <div className="info-item">
-              <p className="label">Kayıt Tarihi</p>
-              <p className="value">{formatDate(patient.registrationDate)}</p>
+              <span className="label">Kayıt Tarihi:</span>
+              <span>{formatDate(patient.registrationDate)}</span>
             </div>
             <div className="info-item">
-              <p className="label">Toplam Maliyet</p>
-              <p className="value">
-                {formatCurrency(
-                  (patient.appointments || []).reduce((sum, apt) => sum + (apt.cost || 0), 0)
-                )}
-              </p>
-            </div>
-            <div className="info-item">
-              <p className="label">Bakiye</p>
-              <p
-                className={`value ${
-                  calculateBalance() > 0 ? 'negative' : 'positive'
-                }`}
-              >
+              <span className="label">Bakiye:</span>
+              <span className={calculateBalance() > 0 ? 'text-red' : 'text-green'}>
                 {formatCurrency(calculateBalance())}
-              </p>
+              </span>
             </div>
           </div>
         </div>
@@ -138,7 +137,10 @@ const PatientDetails = () => {
       <div className="card">
         <div className="card-header">
           <h2>Randevular</h2>
-          <button className="button primary" onClick={() => navigate(`/patients/${tcNumber}/new-appointment`)}>
+          <button 
+            className="button primary" 
+            onClick={() => navigate(`/patients/${tcNumber}/new-appointment`)}
+          >
             <Calendar className="icon" />
             Yeni Randevu
           </button>
@@ -154,14 +156,26 @@ const PatientDetails = () => {
               </div>
             </div>
             <div className="table-body">
-              {(patient.appointments || []).map((appointment) => (
-                <div key={appointment.id} className="table-row">
-                  <div className="table-cell">{formatDate(appointment.date)}</div>
-                  <div className="table-cell">{appointment.reason}</div>
-                  <div className="table-cell">{formatCurrency(appointment.cost)}</div>
-                  <div className="table-cell">{appointment.notes}</div>
+              {(patient.appointments || []).length === 0 ? (
+                <div className="table-row">
+                  <div className="table-cell empty" colSpan="4">
+                    Randevu bulunmamaktadır
+                  </div>
                 </div>
-              ))}
+              ) : (
+                patient.appointments.map((appointment) => (
+                  <div 
+                    key={appointment.id} 
+                    className="table-row clickable"
+                    onClick={() => navigate(`/patients/${tcNumber}/appointments/${appointment.id}`)}
+                  >
+                    <div className="table-cell">{formatDate(appointment.date)}</div>
+                    <div className="table-cell">{appointment.reason}</div>
+                    <div className="table-cell">{formatCurrency(appointment.cost)}</div>
+                    <div className="table-cell">{appointment.notes}</div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>
@@ -170,7 +184,10 @@ const PatientDetails = () => {
       <div className="card">
         <div className="card-header">
           <h2>Ödemeler</h2>
-          <button className="button primary" onClick={() => navigate(`/patients/${tcNumber}/new-payment`)}>
+          <button 
+            className="button primary" 
+            onClick={() => navigate(`/patients/${tcNumber}/new-payment`)}
+          >
             <CreditCard className="icon" />
             Ödeme Ekle
           </button>
@@ -185,13 +202,21 @@ const PatientDetails = () => {
               </div>
             </div>
             <div className="table-body">
-              {(patient.payments || []).map((payment) => (
-                <div key={payment.id} className="table-row">
-                  <div className="table-cell">{formatDate(payment.date)}</div>
-                  <div className="table-cell">{formatCurrency(payment.amount)}</div>
-                  <div className="table-cell">{payment.notes}</div>
+              {(patient.payments || []).length === 0 ? (
+                <div className="table-row">
+                  <div className="table-cell empty" colSpan="3">
+                    Ödeme bulunmamaktadır
+                  </div>
                 </div>
-              ))}
+              ) : (
+                patient.payments.map((payment) => (
+                  <div key={payment.id} className="table-row">
+                    <div className="table-cell">{formatDate(payment.date)}</div>
+                    <div className="table-cell">{formatCurrency(payment.amount)}</div>
+                    <div className="table-cell">{payment.notes}</div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>

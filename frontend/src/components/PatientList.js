@@ -1,30 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PlusCircle, ArrowUpDown } from 'lucide-react';
+import { PlusCircle, ArrowUpDown, TrendingUp } from 'lucide-react';
 import './PatientList.css';
 
 const PatientList = () => {
   const [patients, setPatients] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortByDate, setSortByDate] = useState(true); // Varsayılan olarak tarihe göre sıralama aktif
+  const [sortByDate, setSortByDate] = useState(true);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchPatients = async () => {
-      try {
-        const response = await fetch('http://localhost:3000/api/patients');
-        const data = await response.json();
-        setPatients(data);
-      } catch (error) {
-        console.error('Error fetching patients:', error);
-      }
-    };
-
-    fetchPatients();
+  const fetchPatients = useCallback(async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/patients');
+      const data = await response.json();
+      setPatients(data);
+    } catch (error) {
+      console.error('Error fetching patients:', error);
+    }
   }, []);
 
+  useEffect(() => {
+    fetchPatients();
+  }, [fetchPatients]);
+
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('tr-TR');
+    if (!dateString) return '-';
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('tr-TR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit'
+    }).format(date);
   };
 
   const getUpcomingAppointment = (patient) => {
@@ -47,17 +55,15 @@ const PatientList = () => {
     return totalCost - totalPaid;
   };
 
-  // Hastaları sırala
   const sortedPatients = [...patients].sort((a, b) => {
     if (sortByDate) {
-      const dateA = getUpcomingAppointment(a) || '9999-12-31';
-      const dateB = getUpcomingAppointment(b) || '9999-12-31';
+      const dateA = getUpcomingAppointment(a) || '9999-12-31T23:59:59';
+      const dateB = getUpcomingAppointment(b) || '9999-12-31T23:59:59';
       return new Date(dateA) - new Date(dateB);
     }
     return 0;
   });
 
-  // Arama terimine göre hastaları filtreleme
   const filteredPatients = sortedPatients.filter(patient => 
     patient.tcNumber.includes(searchTerm) || 
     patient.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -77,10 +83,16 @@ const PatientList = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <button className="add-button" onClick={() => navigate('/add-patient')}>
-            <PlusCircle className="icon" />
-            Yeni Hasta Ekle
-          </button>
+          <div className="button-group">
+            <button className="summary-button" onClick={() => navigate('/financial-summary')}>
+              <TrendingUp className="icon" />
+              Mali Özet
+            </button>
+            <button className="add-button" onClick={() => navigate('/add-patient')}>
+              <PlusCircle className="icon" />
+              Yeni Hasta Ekle
+            </button>
+          </div>
         </div>
         <div className="list-content">
           {filteredPatients.length > 0 ? (
@@ -117,7 +129,7 @@ const PatientList = () => {
                       <div className="table-cell">{patient.phoneNumber}</div>
                       <div className="table-cell">{formatDate(patient.registrationDate)}</div>
                       <div className="table-cell">
-                        {nextAppointment ? formatDate(nextAppointment) : '-'}
+                        {formatDate(nextAppointment)}
                       </div>
                     </div>
                   );

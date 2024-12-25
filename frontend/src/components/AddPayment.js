@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save } from 'lucide-react';
-import './AddForms.css';
+import './AddPayment.css';
 
 const AddPayment = () => {
   const { tcNumber } = useParams();

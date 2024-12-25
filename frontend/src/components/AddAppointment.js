@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save } from 'lucide-react';
-import './AddForms.css';
+import './AddAppointment.css';
 
 const AddAppointment = () => {
   const { tcNumber } = useParams();
@@ -64,116 +64,105 @@ const AddAppointment = () => {
 
   // Çalışma saatleri için saat aralıkları
   const timeSlots = [];
-  for (let hour = 9; hour <= 17; hour++) {
+  for (let hour = 7; hour <= 21; hour++) {
     for (let minute of ['00', '30']) {
       timeSlots.push(`${hour.toString().padStart(2, '0')}:${minute}`);
     }
   }
 
   return (
-    <div className="add-appointment">
-      <div className="card">
-        <div className="card-header">
-          <div className="header-left">
-            <button className="button back" onClick={() => navigate(`/patients/${tcNumber}`)}>
-              <ArrowLeft className="icon" />
-              Geri
-            </button>
-            <h2>Yeni Randevu Ekle</h2>
+    <div className="appointment-form">
+      <div className="form-header">
+        <button className="button secondary" onClick={() => navigate(`/patients/${tcNumber}`)}>
+          <ArrowLeft size={18} />
+          Geri
+        </button>
+        <h2>Yeni Randevu Ekle</h2>
+      </div>
+
+      <form onSubmit={handleSubmit}>
+        <div className="form-row">
+          <div className="form-group date-group">
+            <label htmlFor="date">Tarih*</label>
+            <input
+              type="date"
+              id="date"
+              name="date"
+              value={appointment.date}
+              onChange={handleChange}
+              min={today}
+              required
+            />
+          </div>
+
+          <div className="form-group time-group">
+            <label htmlFor="time">Saat*</label>
+            <select
+              id="time"
+              name="time"
+              value={appointment.time}
+              onChange={handleChange}
+              required
+            >
+              {timeSlots.map(time => (
+                <option key={time} value={time}>
+                  {time}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
-        <div className="card-content">
-          {error && <div className="error">{error}</div>}
-          <form onSubmit={handleSubmit}>
-            <div className="form-row">
-              <div className="form-group">
-                <label htmlFor="date">Randevu Tarihi</label>
-                <input
-                  type="date"
-                  id="date"
-                  name="date"
-                  value={appointment.date}
-                  onChange={handleChange}
-                  min={today}
-                  required
-                  className="form-control"
-                />
-              </div>
 
-              <div className="form-group">
-                <label htmlFor="time">Randevu Saati</label>
-                <select
-                  id="time"
-                  name="time"
-                  value={appointment.time}
-                  onChange={handleChange}
-                  required
-                  className="form-control"
-                >
-                  {timeSlots.map(time => (
-                    <option key={time} value={time}>
-                      {time}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="reason">Randevu Nedeni</label>
-              <input
-                type="text"
-                id="reason"
-                name="reason"
-                value={appointment.reason}
-                onChange={handleChange}
-                required
-                className="form-control"
-                placeholder="Randevu nedenini giriniz"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="cost">Ücret (TL)</label>
-              <input
-                type="number"
-                id="cost"
-                name="cost"
-                value={appointment.cost}
-                onChange={handleChange}
-                required
-                min="0"
-                step="0.01"
-                className="form-control"
-                placeholder="0.00"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="notes">Notlar</label>
-              <textarea
-                id="notes"
-                name="notes"
-                value={appointment.notes}
-                onChange={handleChange}
-                className="form-control"
-                rows="3"
-                placeholder="Varsa notlarınızı giriniz"
-              />
-            </div>
-
-            <div className="form-actions">
-              <button type="button" className="button secondary" onClick={() => navigate(`/patients/${tcNumber}`)}>
-                İptal
-              </button>
-              <button type="submit" className="button primary">
-                <Save className="icon" />
-                Kaydet
-              </button>
-            </div>
-          </form>
+        <div className="form-group">
+          <label htmlFor="reason">Randevu Nedeni*</label>
+          <input
+            type="text"
+            id="reason"
+            name="reason"
+            value={appointment.reason}
+            onChange={handleChange}
+            required
+            placeholder="Randevu nedenini giriniz"
+          />
         </div>
-      </div>
+
+        <div className="form-group">
+          <label htmlFor="cost">Ücret (TL)*</label>
+          <input
+            type="number"
+            id="cost"
+            name="cost"
+            value={appointment.cost}
+            onChange={handleChange}
+            required
+            min="0"
+            step="0.01"
+            placeholder="0.00"
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="notes">Notlar</label>
+          <textarea
+            id="notes"
+            name="notes"
+            value={appointment.notes}
+            onChange={handleChange}
+            placeholder="Varsa notlarınızı giriniz"
+          />
+        </div>
+
+        {error && <div className="error-message">{error}</div>}
+
+        <div className="form-actions">
+          <button type="button" className="button secondary" onClick={() => navigate(`/patients/${tcNumber}`)}>
+            İptal
+          </button>
+          <button type="submit" className="button primary">
+            Randevu Ekle
+          </button>
+        </div>
+      </form>
     </div>
   );
 };

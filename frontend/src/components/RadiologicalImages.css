@@ -1,0 +1,287 @@
+.radiological-images {
+  max-width: 1200px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+.card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 20px;
+  border-bottom: 1px solid #e5e5e5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-left h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.button.back {
+  background: #f5f5f5;
+  color: #333;
+}
+
+.button.back:hover {
+  background: #e5e5e5;
+}
+
+.button.primary {
+  background: #2563eb;
+  color: white;
+}
+
+.button.primary:hover {
+  background: #1d4ed8;
+}
+
+.button.delete {
+  background: #dc2626;
+  color: white;
+}
+
+.button.delete:hover {
+  background: #b91c1c;
+}
+
+.button.small {
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+.card-content {
+  padding: 20px;
+}
+
+.images-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.image-card {
+  background: #f8f9fa;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.image-preview {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+}
+
+.image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.2s;
+}
+
+.image-preview:hover img {
+  transform: scale(1.05);
+}
+
+.image-info {
+  padding: 16px;
+  border-top: 1px solid #e5e5e5;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.info-row:last-child {
+  margin-bottom: 0;
+}
+
+.label {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.image-actions {
+  display: flex;
+  gap: 8px;
+  padding: 16px;
+  border-top: 1px solid #e5e5e5;
+  background: white;
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
+.error {
+  text-align: center;
+  padding: 2rem;
+  color: #dc2626;
+}
+
+.no-records {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.teeth-grid {
+  margin-top: 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+  padding: 12px !important;
+  background: #f8fafc !important;
+  border-radius: 8px !important;
+  overflow-x: auto !important;
+  width: 100% !important;
+}
+
+.teeth-row {
+  display: grid !important;
+  grid-template-columns: repeat(16, minmax(32px, 1fr)) !important;
+  gap: 6px !important;
+  min-width: min-content !important;
+  width: 100% !important;
+}
+
+.tooth {
+  aspect-ratio: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid #d1d5db !important;
+  border-radius: 4px !important;
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: all 0.2s !important;
+  background-color: transparent !important;
+  position: relative !important;
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+}
+
+.tooth:hover {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+  transform: translateY(-1px);
+}
+
+.tooth.selected {
+  border: 2px solid #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+  transform: translateY(-1px);
+}
+
+.tooth.selected::after {
+  content: '✓';
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #2563eb;
+  color: white;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+}
+
+.tooth[style*="yellow"] {
+  background-color: #fef08a !important;
+  border-color: #facc15;
+}
+
+.tooth[style*="green"] {
+  background-color: #bbf7d0 !important;
+  border-color: #22c55e;
+}
+
+@media (max-width: 768px) {
+  .radiological-images {
+    padding: 16px;
+  }
+
+  .images-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .header-left {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .teeth-grid {
+    padding: 6px !important;
+  }
+
+  .teeth-row {
+    grid-template-columns: repeat(8, minmax(28px, 1fr)) !important;
+  }
+
+  .tooth {
+    font-size: 0.75rem !important;
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+  }
+
+  .tooth.selected::after {
+    width: 14px !important;
+    height: 14px !important;
+    font-size: 9px !important;
+    top: -5px !important;
+    right: -5px !important;
+  }
+} 
