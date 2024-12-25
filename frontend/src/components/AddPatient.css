@@ -1,0 +1,88 @@
+/* AddPatient.css */
+.add-patient {
+    max-width: 600px;
+    margin: 24px auto;
+    padding: 0 16px;
+  }
+  
+  .form-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-header {
+    padding: 20px;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  
+  .form-header h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  .form-content {
+    padding: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #374151;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .form-group input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  }
+  
+  .form-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  
+  .button {
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+  }
+  
+  .button.primary {
+    background-color: #2563eb;
+    color: white;
+  }
+  
+  .button.primary:hover {
+    background-color: #1d4ed8;
+  }
+  
+  .button.secondary {
+    background-color: white;
+    border: 1px solid #d1d5db;
+    color: #374151;
+  }
+  
+  .button.secondary:hover {
+    background-color: #f3f4f6;
+  }

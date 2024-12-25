@@ -1,0 +1,63 @@
+.edit-patient {
+  max-width: 800px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  transition: border-color 0.2s;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
+.form-control:disabled {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.button.secondary {
+  background-color: white;
+  border: 1px solid #d1d5db;
+  color: #374151;
+}
+
+.button.secondary:hover {
+  background-color: #f3f4f6;
+}
+
+.error {
+  color: #dc2626;
+  padding: 16px;
+  text-align: center;
+  background-color: #fee2e2;
+  border-radius: 4px;
+  margin: 24px auto;
+  max-width: 800px;
+} 
