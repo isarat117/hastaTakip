@@ -56,7 +56,6 @@ const AddPatient = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // TC Kimlik numarası doğrulama
     const tcError = validateTCNumber(formData.tcNumber);
     if (tcError) {
       setErrors(prev => ({ ...prev, tcNumber: tcError }));
@@ -90,7 +89,6 @@ const AddPatient = () => {
       [name]: value
     }));
 
-    // TC Kimlik numarası değiştiğinde anında doğrulama
     if (name === 'tcNumber') {
       if (value.length === 11) {
         const error = validateTCNumber(value);

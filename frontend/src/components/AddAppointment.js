@@ -22,7 +22,6 @@ const AddAppointment = () => {
     const appointmentDateTime = new Date(appointment.date + 'T' + appointment.time);
     const now = new Date();
 
-    // Geçmiş tarih kontrolü
     if (appointmentDateTime < now) {
       setError('Geçmiş bir tarih için randevu oluşturulamaz');
       return;
@@ -36,7 +35,7 @@ const AddAppointment = () => {
         },
         body: JSON.stringify({
           ...appointment,
-          date: appointmentDateTime.toISOString(), // Tarih ve saat birleştirilmiş halde
+          date: appointmentDateTime.toISOString(),
           cost: parseFloat(appointment.cost) || 0
         }),
       });
@@ -59,10 +58,8 @@ const AddAppointment = () => {
     }));
   };
 
-  // Minimum tarih olarak bugünü ayarla
   const today = new Date().toISOString().split('T')[0];
 
-  // Çalışma saatleri için saat aralıkları
   const timeSlots = [];
   for (let hour = 7; hour <= 21; hour++) {
     for (let minute of ['00', '30']) {

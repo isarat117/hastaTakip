@@ -2,21 +2,21 @@ import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'ty
 import { Patient } from '../patients/patient.entity';
 import { Radiograph } from '../radiographs/radiograph.entity';
 
-@Entity()
+@Entity('appointments')
 export class Appointment {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ type: 'timestamp with time zone' })
   date: Date;
 
-  @Column()
+  @Column({ type: 'varchar', length: 255 })
   reason: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'text', nullable: true })
   notes: string;
 
-  @Column('decimal', { precision: 10, scale: 2, default: 0 })
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
   cost: number;
 
   @ManyToOne(() => Patient, patient => patient.appointments, { onDelete: 'CASCADE' })

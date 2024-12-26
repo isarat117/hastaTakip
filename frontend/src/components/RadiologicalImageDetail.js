@@ -16,7 +16,6 @@ const RadiologicalImageDetail = () => {
   const [teethNotes, setTeethNotes] = useState([]);
   const [showConfirmPopup, setShowConfirmPopup] = useState(null);
   
-  // Görüntü yakınlaştırma ve hareket state'leri
   const [scale, setScale] = useState(1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
@@ -27,7 +26,6 @@ const RadiologicalImageDetail = () => {
 
   const fetchImage = useCallback(async () => {
     try {
-      // Seçili görüntüyü al
       const response = await fetch(`http://localhost:3000/api/radiographs/${imageId}`);
       if (!response.ok) {
         throw new Error('Görüntü yüklenirken bir hata oluştu');
@@ -36,7 +34,6 @@ const RadiologicalImageDetail = () => {
       setImage(data);
       setEditingNote(data.toothNotes?.[selectedTooth] || '');
 
-      // Tüm görüntüleri al
       const allImagesResponse = await fetch(`http://localhost:3000/api/patients/${tcNumber}/radiographs`);
       if (!allImagesResponse.ok) {
         throw new Error('Görüntüler yüklenirken bir hata oluştu');
@@ -54,7 +51,6 @@ const RadiologicalImageDetail = () => {
     fetchImage();
   }, [fetchImage]);
 
-  // Diş notlarını getir
   useEffect(() => {
     const fetchTeethNotes = async () => {
       try {
@@ -72,7 +68,6 @@ const RadiologicalImageDetail = () => {
     fetchTeethNotes();
   }, [tcNumber]);
 
-  // Yakınlaştırma işlemleri
   const handleWheel = (e) => {
     if (e.ctrlKey || e.metaKey) {
       e.preventDefault();
@@ -95,9 +90,8 @@ const RadiologicalImageDetail = () => {
     setPosition({ x: 0, y: 0 });
   };
 
-  // Hareket işlemleri
   const handleMouseDown = (e) => {
-    if (e.button === 0) { // Sol tık
+    if (e.button === 0) {
       setIsDragging(true);
       setStartPosition({
         x: e.clientX - position.x,
@@ -118,7 +112,6 @@ const RadiologicalImageDetail = () => {
     setIsDragging(false);
   };
 
-  // Enter tuşu ile pan modunu aç/kapa
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       setIsPanning(!isPanning);
@@ -152,7 +145,6 @@ const RadiologicalImageDetail = () => {
     if (!selectedTooth || !editingNote.trim()) return;
 
     try {
-      // İstek detaylarını logla
       console.log('Not gönderiliyor:', {
         note: editingNote,
         createdBy: 'Doktor'
@@ -175,7 +167,6 @@ const RadiologicalImageDetail = () => {
         throw new Error(errorData.message || 'Not kaydedilirken bir hata oluştu');
       }
 
-      // Notları yeniden yükle
       const notesResponse = await fetch(`http://localhost:3000/api/patients/${tcNumber}/teeth/notes`);
       if (notesResponse.ok) {
         const notesData = await notesResponse.json();
@@ -201,15 +192,12 @@ const RadiologicalImageDetail = () => {
     });
   };
 
-  // Diş numaralarını oluştur
   const createTeethNumbers = () => {
-    // Üst çene (18-11, 21-28)
     const upperTeeth = [
       18, 17, 16, 15, 14, 13, 12, 11,
       21, 22, 23, 24, 25, 26, 27, 28
     ];
     
-    // Alt çene (48-41, 31-38)
     const lowerTeeth = [
       48, 47, 46, 45, 44, 43, 42, 41,
       31, 32, 33, 34, 35, 36, 37, 38
@@ -219,7 +207,6 @@ const RadiologicalImageDetail = () => {
   };
 
   const renderToothConfirmPopup = (toothNumber) => {
-    // Üst sıradaki dişler için kontrol (18-11 ve 21-28)
     const isUpperTooth = (toothNumber >= 11 && toothNumber <= 18) || (toothNumber >= 21 && toothNumber <= 28);
     
     return (
@@ -249,12 +236,10 @@ const RadiologicalImageDetail = () => {
   };
 
   const handleImageClick = (radiographId) => {
-    // Önce sayfayı yukarı kaydır
     window.scrollTo({
       top: 0,
       behavior: 'smooth'
     });
-    // Sonra yönlendirme yap
     navigate(`/patients/${tcNumber}/radiographs/${radiographId}`);
   };
 
@@ -268,7 +253,7 @@ const RadiologicalImageDetail = () => {
       <div className="selected-tooth-info">
         <h4>{selectedTooth} Numaralı Diş Bilgileri</h4>
         
-        {/* Notlar Bölümü */}
+       
         <div className="tooth-info-section">
           <h5>Notlar</h5>
           {notes.length > 0 ? (
@@ -285,7 +270,6 @@ const RadiologicalImageDetail = () => {
           )}
         </div>
 
-        {/* Görüntüler Bölümü */}
         <div className="tooth-info-section">
           <h5>Radyoloji Görüntüleri</h5>
           {relatedRadiographs.length > 0 ? (

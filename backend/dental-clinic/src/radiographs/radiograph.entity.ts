@@ -2,36 +2,36 @@ import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn } f
 import { Patient } from '../patients/patient.entity';
 import { Appointment } from '../appointments/appointment.entity';
 
-@Entity()
+@Entity('radiographs')
 export class Radiograph {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 11 })
   patientTc: string;
 
-  @Column()
+  @Column({ type: 'uuid' })
   appointmentId: string;
 
-  @Column()
+  @Column({ type: 'integer' })
   toothNumber: number;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamp with time zone' })
   date: Date;
 
-  @Column({ nullable: true })
+  @Column({ type: 'text', nullable: true })
   notes: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'text', nullable: true })
   diagnosis: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 50 })
   type: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 255 })
   imagePath: string;
 
-  @Column('simple-json', { nullable: true })
+  @Column({ type: 'jsonb', nullable: true })
   toothNotes: Record<string, any>;
 
   @ManyToOne(() => Patient, patient => patient.radiographs, { onDelete: 'CASCADE' })

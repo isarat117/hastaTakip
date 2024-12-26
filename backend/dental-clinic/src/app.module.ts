@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { ConfigModule } from '@nestjs/config';
 import { join } from 'path';
 import { PatientsModule } from './patients/patients.module';
 import { AppointmentsModule } from './appointments/appointments.module';
@@ -16,12 +17,22 @@ import { extname } from 'path';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: 'data/dental-clinic.sqlite',
+      type: 'postgres',
+      host: process.env.DB_HOST || 'localhost',
+      port: parseInt(process.env.DB_PORT) || 5432,
+      username: process.env.DB_USERNAME || 'postgres',
+      password: process.env.DB_PASSWORD || 'postgres',
+      database: process.env.DB_DATABASE || 'dental_clinic',
       entities: [Patient, Appointment, Payment, Radiograph],
-      synchronize: true,
-      logging: true
+      synchronize: process.env.NODE_ENV !== 'production',
+      logging: process.env.NODE_ENV !== 'production',
+      ssl: process.env.DB_SSL === 'true' ? {
+        rejectUnauthorized: false
+      } : false
     }),
     MulterModule.register({
       storage: diskStorage({
@@ -56,7 +67,6 @@ export class AppModule {
     const path = require('path');
     
     const dirs = [
-      'data',
       'uploads',
       'uploads/radiographs'
     ];

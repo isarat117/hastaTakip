@@ -1,18 +1,18 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn } from 'typeorm';
 import { Patient } from '../patients/patient.entity';
 
-@Entity()
+@Entity('payments')
 export class Payment {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamp with time zone' })
   date: Date;
 
-  @Column('decimal', { precision: 10, scale: 2 })
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
   amount: number;
 
-  @Column({ nullable: true })
+  @Column({ type: 'text', nullable: true })
   notes: string;
 
   @ManyToOne(() => Patient, patient => patient.payments, { onDelete: 'CASCADE' })

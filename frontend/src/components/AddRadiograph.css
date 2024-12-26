@@ -279,8 +279,8 @@
 }
 
 .tooth[style*="green"] {
-  background-color: #bbf7d0 !important;
-  border-color: #22c55e;
+  background-color: #fef08a !important;
+  border-color: #facc15;
 }
 
 @media (max-width: 768px) {

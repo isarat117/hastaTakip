@@ -3,18 +3,18 @@ import { Appointment } from '../appointments/appointment.entity';
 import { Payment } from '../payments/payment.entity';
 import { Radiograph } from '../radiographs/radiograph.entity';
 
-@Entity()
+@Entity('patients')
 export class Patient {
-  @PrimaryColumn()
+  @PrimaryColumn({ type: 'varchar', length: 11 })
   tcNumber: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 100 })
   name: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 20 })
   phoneNumber: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamp with time zone' })
   registrationDate: Date;
 
   @OneToMany(() => Appointment, appointment => appointment.patient, { eager: true, cascade: true })
@@ -26,7 +26,7 @@ export class Patient {
   @OneToMany(() => Radiograph, radiograph => radiograph.patient)
   radiographs: Radiograph[];
 
-  @Column('simple-json', { nullable: true })
+  @Column({ type: 'jsonb', nullable: true })
   teethNotes: {
     [key: string]: Array<{
       id: string;
