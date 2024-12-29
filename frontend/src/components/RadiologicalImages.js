@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, Trash2, Eye } from 'lucide-react';
 import './RadiologicalImages.css';
+import { BASE_URL } from '../config/config';
 
 const RadiologicalImages = () => {
   const { tcNumber } = useParams();
@@ -13,7 +14,7 @@ const RadiologicalImages = () => {
 
   const fetchImages = useCallback(async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/patients/${tcNumber}/radiographs`);
+      const response = await fetch(`${BASE_URL}/patients/${tcNumber}/radiographs`);
       if (!response.ok) {
         throw new Error('Görüntüler yüklenirken bir hata oluştu');
       }
@@ -36,7 +37,7 @@ const RadiologicalImages = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/api/radiographs/${id}`, {
+      const response = await fetch(`${BASE_URL}/radiographs/${id}`, {
         method: 'DELETE'
       });
 

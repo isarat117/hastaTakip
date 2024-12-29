@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, Image } from 'lucide-react';
 import './AppointmentDetail.css';
+import { BASE_URL } from '../config/config';
 
 const AppointmentDetail = () => {
   const { tcNumber, appointmentId } = useParams();
@@ -13,7 +14,7 @@ const AppointmentDetail = () => {
 
   const fetchAppointmentDetails = useCallback(async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/appointments/${appointmentId}`);
+      const response = await fetch(`${BASE_URL}/appointments/${appointmentId}`);
       if (!response.ok) {
         throw new Error('Randevu detayları alınamadı');
       }
@@ -26,7 +27,7 @@ const AppointmentDetail = () => {
 
   const fetchRadiographs = useCallback(async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/appointments/${appointmentId}/radiographs`);
+      const response = await fetch(`${BASE_URL}/appointments/${appointmentId}/radiographs`);
       if (!response.ok) {
         throw new Error('Görüntüler alınamadı');
       }
@@ -131,7 +132,7 @@ const AppointmentDetail = () => {
                   onClick={() => navigate(`/patients/${tcNumber}/radiographs/${radiograph.id}`)}
                 >
                   <div className="radiograph-image">
-                    <img src={`http://localhost:3000${radiograph.imagePath}`} alt={`Diş ${radiograph.toothNumber}`} />
+                    <img src={`${BASE_URL.replace('/api', '')}${radiograph.imagePath}`} alt={`Diş ${radiograph.toothNumber}`} />
                   </div>
                   <div className="radiograph-info">
                     <div className="info-row">

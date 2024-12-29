@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PlusCircle, ArrowUpDown, TrendingUp } from 'lucide-react';
 import './PatientList.css';
+import { BASE_URL } from '../config/config';
 
 const PatientList = () => {
   const [patients, setPatients] = useState([]);
@@ -11,7 +12,7 @@ const PatientList = () => {
 
   const fetchPatients = useCallback(async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/patients');
+      const response = await fetch(`${BASE_URL}/patients`);
       const data = await response.json();
       setPatients(data);
     } catch (error) {

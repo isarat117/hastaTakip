@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Calendar } from 'lucide-react';
 import './FinancialSummary.css';
+import { BASE_URL } from '../config/config';
 
 const FinancialSummary = () => {
   const navigate = useNavigate();
@@ -24,9 +25,7 @@ const FinancialSummary = () => {
     setError('');
 
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/financial-summary?startDate=${startDate}&endDate=${endDate}`
-      );
+      const response = await fetch(`${BASE_URL}/financial-summary?startDate=${startDate}&endDate=${endDate}`);
 
       if (!response.ok) {
         throw new Error('Veri getirme hatası');

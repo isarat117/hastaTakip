@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ZoomIn, ZoomOut, Maximize2 } from 'lucide-react';
 import './RadiologicalImageDetail.css';
+import { BASE_URL } from '../config/config';
 
 const RadiologicalImageDetail = () => {
   const { tcNumber, imageId } = useParams();
@@ -26,7 +27,7 @@ const RadiologicalImageDetail = () => {
 
   const fetchImage = useCallback(async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/radiographs/${imageId}`);
+      const response = await fetch(`${BASE_URL}/radiographs/${imageId}`);
       if (!response.ok) {
         throw new Error('Görüntü yüklenirken bir hata oluştu');
       }
@@ -34,7 +35,7 @@ const RadiologicalImageDetail = () => {
       setImage(data);
       setEditingNote(data.toothNotes?.[selectedTooth] || '');
 
-      const allImagesResponse = await fetch(`http://localhost:3000/api/patients/${tcNumber}/radiographs`);
+      const allImagesResponse = await fetch(`${BASE_URL}/patients/${tcNumber}/radiographs`);
       if (!allImagesResponse.ok) {
         throw new Error('Görüntüler yüklenirken bir hata oluştu');
       }
@@ -54,7 +55,7 @@ const RadiologicalImageDetail = () => {
   useEffect(() => {
     const fetchTeethNotes = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/patients/${tcNumber}/teeth/notes`);
+        const response = await fetch(`${BASE_URL}/patients/${tcNumber}/teeth/notes`);
         if (!response.ok) {
           throw new Error('Diş notları alınamadı');
         }
@@ -150,7 +151,7 @@ const RadiologicalImageDetail = () => {
         createdBy: 'Doktor'
       });
 
-      const response = await fetch(`http://localhost:3000/api/patients/${tcNumber}/teeth/${selectedTooth}/notes`, {
+      const response = await fetch(`${BASE_URL}/patients/${tcNumber}/teeth/${selectedTooth}/notes`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -167,7 +168,7 @@ const RadiologicalImageDetail = () => {
         throw new Error(errorData.message || 'Not kaydedilirken bir hata oluştu');
       }
 
-      const notesResponse = await fetch(`http://localhost:3000/api/patients/${tcNumber}/teeth/notes`);
+      const notesResponse = await fetch(`${BASE_URL}/patients/${tcNumber}/teeth/notes`);
       if (notesResponse.ok) {
         const notesData = await notesResponse.json();
         setTeethNotes(notesData);
@@ -397,7 +398,7 @@ const RadiologicalImageDetail = () => {
             <div className="image-container">
               <img 
                 ref={imageRef}
-                src={`http://localhost:3000${image.imagePath}`} 
+                src={`${BASE_URL.replace('/api', '')}${image.imagePath}`} 
                 alt={`Diş ${image.toothNumber}`}
                 className="main-image"
                 style={{

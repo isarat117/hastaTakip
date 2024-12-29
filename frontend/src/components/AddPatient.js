@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AddPatient.css';
+import { BASE_URL } from '../config/config';
 
 const AddPatient = () => {
   const navigate = useNavigate();
@@ -63,7 +64,7 @@ const AddPatient = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/api/patients', {
+      const response = await fetch(`${BASE_URL}/patients`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

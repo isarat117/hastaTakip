@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Edit, Trash2, Calendar, CreditCard, Image } from 'lucide-react';
 import './PatientDetails.css';
+import { BASE_URL } from '../config/config';
 
 const PatientDetails = () => {
   const { tcNumber } = useParams();
@@ -9,9 +10,9 @@ const PatientDetails = () => {
   const [patient, setPatient] = useState(null);
 
   useEffect(() => {
-    const fetchPatientDetails = async () => {
+    const fetchPatient = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/patients/${tcNumber}`);
+        const response = await fetch(`${BASE_URL}/patients/${tcNumber}`);
         if (!response.ok) {
           throw new Error('Hasta bilgileri alınamadı');
         }
@@ -22,7 +23,7 @@ const PatientDetails = () => {
       }
     };
 
-    fetchPatientDetails();
+    fetchPatient();
   }, [tcNumber]);
 
   const calculateBalance = () => {
@@ -56,7 +57,7 @@ const PatientDetails = () => {
   const handleDelete = async () => {
     if (window.confirm('Bu hastayı silmek istediğinizden emin misiniz?')) {
       try {
-        const response = await fetch(`http://localhost:3000/api/patients/${tcNumber}`, {
+        const response = await fetch(`${BASE_URL}/patients/${tcNumber}`, {
           method: 'DELETE'
         });
         

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save } from 'lucide-react';
 import './AddPayment.css';
+import { BASE_URL } from '../config/config';
 
 const AddPayment = () => {
   const { tcNumber } = useParams();
@@ -15,7 +16,7 @@ const AddPayment = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:3000/api/patients/${tcNumber}/payments`, {
+      const response = await fetch(`${BASE_URL}/patients/${tcNumber}/payments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

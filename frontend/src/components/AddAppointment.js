@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save } from 'lucide-react';
 import './AddAppointment.css';
+import { BASE_URL } from '../config/config';
 
 const AddAppointment = () => {
   const { tcNumber } = useParams();
@@ -28,7 +29,7 @@ const AddAppointment = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/api/patients/${tcNumber}/appointments`, {
+      const response = await fetch(`${BASE_URL}/patients/${tcNumber}/appointments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

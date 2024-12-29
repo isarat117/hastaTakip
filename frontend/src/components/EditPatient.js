@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save } from 'lucide-react';
 import './EditPatient.css';
+import { BASE_URL } from '../config/config';
 
 const EditPatient = () => {
   const { tcNumber } = useParams();
@@ -17,7 +18,7 @@ const EditPatient = () => {
   useEffect(() => {
     const fetchPatient = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/patients/${tcNumber}`);
+        const response = await fetch(`${BASE_URL}/patients/${tcNumber}`);
         if (!response.ok) {
           throw new Error('Hasta bulunamadı');
         }
@@ -40,7 +41,7 @@ const EditPatient = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:3000/api/patients/${tcNumber}`, {
+      const response = await fetch(`${BASE_URL}/patients/${tcNumber}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

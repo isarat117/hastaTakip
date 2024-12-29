@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { ArrowLeft, Upload, Image as ImageIcon } from 'lucide-react';
 import './AddRadiograph.css';
+import { BASE_URL } from '../config/config';
 
 const AddRadiograph = () => {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const AddRadiograph = () => {
     const fetchData = async () => {
       try {
         // Hasta bilgilerini ve randevuları getir
-        const patientResponse = await fetch(`http://localhost:3000/api/patients/${tcNumber}`);
+        const patientResponse = await fetch(`${BASE_URL}/patients/${tcNumber}`);
         if (!patientResponse.ok) {
           throw new Error('Hasta bilgileri alınamadı');
         }
@@ -36,7 +37,7 @@ const AddRadiograph = () => {
         setAppointments(patientData.appointments || []);
 
         // Diş notlarını getir
-        const notesResponse = await fetch(`http://localhost:3000/api/patients/${tcNumber}/teeth/notes`);
+        const notesResponse = await fetch(`${BASE_URL}/patients/${tcNumber}/teeth/notes`);
         if (!notesResponse.ok) {
           throw new Error('Diş notları alınamadı');
         }
@@ -91,7 +92,7 @@ const AddRadiograph = () => {
         formDataToSend.append('appointmentId', formData.appointmentId);
       }
 
-      const response = await fetch(`http://localhost:3000/api/patients/${tcNumber}/radiographs`, {
+      const response = await fetch(`${BASE_URL}/patients/${tcNumber}/radiographs`, {
         method: 'POST',
         body: formDataToSend
       });
