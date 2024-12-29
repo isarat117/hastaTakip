@@ -1,95 +1,49 @@
 .appointment-form {
   max-width: 800px;
-  margin: 24px auto;
-  padding: 24px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  padding: 2rem;
 }
 
 .form-header {
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 2rem;
 }
 
 .form-header h2 {
   margin: 0;
-  color: #1f2937;
   font-size: 1.5rem;
-  font-weight: 600;
+  color: var(--text-primary);
 }
 
 .form-row {
-  display: flex;
-  gap: 60px;
-  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .form-group {
-  margin-bottom: 20px;
-  flex: 1;
-}
-
-.form-group.date-group {
-  max-width: 180px;
-  position: relative;
-}
-
-.form-group.time-group {
-  max-width: 140px;
+  margin-bottom: 1.5rem;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 8px;
-  color: #4b5563;
-  font-weight: 500;
-  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
 }
 
-.form-group input[type="text"],
-.form-group input[type="date"],
-.form-group input[type="time"],
-.form-group input[type="number"],
+.form-group input,
 .form-group select,
 .form-group textarea {
   width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  color: #1f2937;
-  background-color: white;
-  transition: all 0.2s;
-}
-
-.form-group input[type="date"] {
-  padding-right: 32px;
-  background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Cline x1='16' y1='2' x2='16' y2='6'%3E%3C/line%3E%3Cline x1='8' y1='2' x2='8' y2='6'%3E%3C/line%3E%3Cline x1='3' y1='10' x2='21' y2='10'%3E%3C/line%3E%3C/svg%3E") no-repeat right 8px center;
-  background-size: 16px;
-  cursor: pointer;
-}
-
-.form-group input[type="date"]::-webkit-calendar-picker-indicator {
-  opacity: 0;
-  cursor: pointer;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
-}
-
-.form-group select {
-  appearance: none;
-  background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 8px center;
-  background-size: 16px;
-  padding-right: 32px;
-  cursor: pointer;
+  padding: 0.625rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: var(--text-primary);
 }
 
 .form-group textarea {
@@ -100,67 +54,36 @@
 .form-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
-  margin-top: 32px;
-  padding-top: 20px;
-  border-top: 1px solid #e5e7eb;
+  gap: 1rem;
+  margin-top: 2rem;
 }
 
-.button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px 20px;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
+.error-message {
+  color: var(--danger-color);
+  background: #fee2e2;
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
 }
 
-.button.secondary {
-  background: #f3f4f6;
-  color: #4b5563;
-  border: 1px solid #d1d5db;
+.selected-teeth {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  text-align: center;
 }
 
-.button.secondary:hover {
-  background: #e5e7eb;
-}
-
-.button.primary {
-  background: #2563eb;
-  color: white;
-  border: none;
-  min-width: 120px;
-}
-
-.button.primary:hover {
-  background: #1d4ed8;
-}
-
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .appointment-form {
-    margin: 16px;
-    padding: 16px;
+    padding: 1rem;
   }
 
   .form-row {
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .form-group.date-group,
-  .form-group.time-group {
-    max-width: none;
-  }
-
-  .form-actions {
-    flex-direction: column-reverse;
-  }
-
-  .button {
-    width: 100%;
+    grid-template-columns: 1fr;
   }
 } 

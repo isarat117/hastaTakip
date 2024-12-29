@@ -12,14 +12,21 @@ const AddAppointment = () => {
     time: '09:00',
     reason: '',
     cost: '',
-    notes: ''
+    notes: '',
+    toothNumbers: []
   });
   const [error, setError] = useState(null);
+
+  const teethNumbers = {
+    upperRight: [18, 17, 16, 15, 14, 13, 12, 11],
+    upperLeft: [21, 22, 23, 24, 25, 26, 27, 28],
+    lowerRight: [48, 47, 46, 45, 44, 43, 42, 41],
+    lowerLeft: [31, 32, 33, 34, 35, 36, 37, 38]
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Tarih ve saat birleştirme
     const appointmentDateTime = new Date(appointment.date + 'T' + appointment.time);
     const now = new Date();
 
@@ -57,6 +64,24 @@ const AddAppointment = () => {
       ...prev,
       [name]: value
     }));
+  };
+
+  const handleToothClick = (toothNumber) => {
+    setAppointment(prev => {
+      const toothNumbers = [...prev.toothNumbers];
+      const index = toothNumbers.indexOf(toothNumber);
+      
+      if (index === -1) {
+        toothNumbers.push(toothNumber);
+      } else {
+        toothNumbers.splice(index, 1);
+      }
+      
+      return {
+        ...prev,
+        toothNumbers
+      };
+    });
   };
 
   const today = new Date().toISOString().split('T')[0];
@@ -108,6 +133,67 @@ const AddAppointment = () => {
                 </option>
               ))}
             </select>
+          </div>
+        </div>
+
+        <div className="form-group">
+          <label>Diş Seçimi</label>
+          <div className="teeth-section">
+            <div className="teeth-grid">
+              {/* Üst Çene */}
+              <div className="teeth-row">
+                {teethNumbers.upperRight.map(number => (
+                  <button
+                    key={number}
+                    type="button"
+                    className={`tooth ${appointment.toothNumbers.includes(number) ? 'selected' : ''}`}
+                    onClick={() => handleToothClick(number)}
+                  >
+                    {number}
+                  </button>
+                ))}
+                {teethNumbers.upperLeft.map(number => (
+                  <button
+                    key={number}
+                    type="button"
+                    className={`tooth ${appointment.toothNumbers.includes(number) ? 'selected' : ''}`}
+                    onClick={() => handleToothClick(number)}
+                  >
+                    {number}
+                  </button>
+                ))}
+              </div>
+
+              {/* Alt Çene */}
+              <div className="teeth-row">
+                {teethNumbers.lowerRight.map(number => (
+                  <button
+                    key={number}
+                    type="button"
+                    className={`tooth ${appointment.toothNumbers.includes(number) ? 'selected' : ''}`}
+                    onClick={() => handleToothClick(number)}
+                  >
+                    {number}
+                  </button>
+                ))}
+                {teethNumbers.lowerLeft.map(number => (
+                  <button
+                    key={number}
+                    type="button"
+                    className={`tooth ${appointment.toothNumbers.includes(number) ? 'selected' : ''}`}
+                    onClick={() => handleToothClick(number)}
+                  >
+                    {number}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {appointment.toothNumbers.length > 0 && (
+              <div className="selected-teeth">
+                Seçili Dişler: {appointment.toothNumbers.sort((a, b) => a - b).join(', ')}
+              </div>
+            )}
           </div>
         </div>
 

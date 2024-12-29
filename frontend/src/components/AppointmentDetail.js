@@ -103,6 +103,10 @@ const AppointmentDetail = () => {
               <span>{appointment.reason}</span>
             </div>
             <div className="info-item">
+              <span className="label">Diş Numaraları:</span>
+              <span>{appointment.toothNumbers?.join(', ') || '-'}</span>
+            </div>
+            <div className="info-item">
               <span className="label">Maliyet:</span>
               <span>{formatCurrency(appointment.cost)}</span>
             </div>

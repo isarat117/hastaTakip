@@ -17,6 +17,11 @@ export class AppointmentsService {
   async create(tcNumber: string, appointmentData: CreateAppointmentDto): Promise<Appointment> {
     const patient = await this.patientsService.findOne(tcNumber);
     const appointmentDate = new Date(appointmentData.date);
+    
+    // Saat bilgisini ayarla
+    const [hours, minutes] = appointmentData.time.split(':');
+    appointmentDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+    
     const now = new Date();
 
     if (appointmentDate < now) {

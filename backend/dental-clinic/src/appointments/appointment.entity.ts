@@ -10,6 +10,9 @@ export class Appointment {
   @Column({ type: 'timestamp with time zone' })
   date: Date;
 
+  @Column({ type: 'varchar', length: 5 })
+  time: string;
+
   @Column({ type: 'varchar', length: 255 })
   reason: string;
 
@@ -18,6 +21,9 @@ export class Appointment {
 
   @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
   cost: number;
+
+  @Column('int', { array: true, nullable: true })
+  toothNumbers: number[];
 
   @ManyToOne(() => Patient, patient => patient.appointments, { onDelete: 'CASCADE' })
   patient: Patient;
