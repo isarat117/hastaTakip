@@ -29,7 +29,7 @@ import { extname } from 'path';
       database: process.env.DB_DATABASE || 'dental_clinic',
       entities: [Patient, Appointment, Payment, Radiograph],
       synchronize: process.env.NODE_ENV !== 'production',
-      logging: process.env.NODE_ENV !== 'production',
+      logging: false,
       ssl: process.env.DB_SSL === 'true' ? {
         rejectUnauthorized: false
       } : false
